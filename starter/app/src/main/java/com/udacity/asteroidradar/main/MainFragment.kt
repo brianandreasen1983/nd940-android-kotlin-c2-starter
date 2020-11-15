@@ -8,7 +8,6 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
-
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
@@ -18,7 +17,7 @@ class MainFragment : Fragment() {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
-        binding.viewModel = viewModel
+        binding.mainViewModel = viewModel
 
         setHasOptionsMenu(true)
 
