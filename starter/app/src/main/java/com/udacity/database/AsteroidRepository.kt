@@ -72,33 +72,4 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
 
         return asteroids
     }
-
-    // Insert the asteroid image of the day to the database.
-    @WorkerThread
-    suspend fun insertAsteroidImageOfTheDay(pictureOfDay: PictureOfDay) {
-        val pic = pictureOfDay
-        val databasePic = DatabasePictureOfDay(pic.title, pic.url, pic.mediaType)
-        asteroidDatabase.asteroidDao.insertPictureOfTheDay(databasePic)
-    }
-
-    @WorkerThread
-    suspend fun insertAllAsteroids(asteroids: ArrayList<Asteroid>) {
-        // Loop through the asteroids and map their properties to the database asteroid and insert them.
-
-        // Inserting each record one by one is slow....Is there a faster way?
-        for ( asteroid in asteroids) {
-            val databaseAsteroid = DatabaseAsteroid(
-                    asteroid.id,
-                    asteroid.codename,
-                    asteroid.closeApproachDate,
-                    asteroid.absoluteMagnitude,
-                    asteroid.estimatedDiameter,
-                    asteroid.relativeVelocity,
-                    asteroid.distanceFromEarth,
-                    asteroid.isPotentiallyHazardous
-            )
-
-            asteroidDatabase.asteroidDao.insertAll(databaseAsteroid)
-        }
-    }
 }
