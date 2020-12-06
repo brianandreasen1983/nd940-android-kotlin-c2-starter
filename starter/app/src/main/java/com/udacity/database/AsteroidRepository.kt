@@ -38,6 +38,7 @@ class AsteroidRepository(private val asteroidDao: AsteroidDao) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun refreshPictureOfTheDay() {
             val pictureOfDay =  NasaApi.retrofitService.getImageOfTheDay(_startDate)
             val databasePictureOfDay = DatabasePictureOfDay(pictureOfDay.title, pictureOfDay.url, pictureOfDay.mediaType)

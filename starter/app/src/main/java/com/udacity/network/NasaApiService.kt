@@ -6,6 +6,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
