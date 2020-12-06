@@ -14,6 +14,3 @@ data class DatabasePictureOfDay constructor(
         var url: String,
         var mediaType: String
 )
-
-
-// TODO: Write an extension method to convert the database model to a domain model.

@@ -14,11 +14,11 @@ class AsteroidDataWorker(appContext: Context, params: WorkerParameters) : Corout
 
     override suspend fun doWork(): Result {
 
-        val database = AsteroidDatabase.getInstance(applicationContext).asteroidDao
+        val database = AsteroidDatabase.getInstance(applicationContext)
         val repository = AsteroidRepository(database)
 
         return try {
-            repository.refreshAsteroids()
+//            repository.refreshAsteroids()
             repository.refreshPictureOfTheDay()
             Result.success()
         } catch (httpException: HttpException) {

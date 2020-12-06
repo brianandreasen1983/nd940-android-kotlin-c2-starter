@@ -17,7 +17,7 @@ class AsteroidApplication : Application() {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     val asteroidDatabase by lazy { AsteroidDatabase.getInstance(this) }
-    val repository by lazy { AsteroidRepository(asteroidDatabase.asteroidDao) }
+    val repository by lazy { AsteroidRepository(asteroidDatabase) }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {

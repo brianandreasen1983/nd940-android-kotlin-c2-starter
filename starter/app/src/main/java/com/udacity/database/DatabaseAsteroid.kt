@@ -1,6 +1,7 @@
 package com.udacity.database
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.udacity.asteroidradar.Asteroid
 
@@ -17,17 +18,19 @@ data class DatabaseAsteroid constructor(
         val isPotentiallyHazardous: Boolean
 )
 
+
+// Extension function that converts from database objects to domain objects.
 fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
-    return map {
-        Asteroid(
-                id = it.asteroidId,
-                codename = it.codename,
-                closeApproachDate = it.closeApproachDate,
-                absoluteMagnitude = it.absoluteMagnitude,
-                estimatedDiameter = it.estimatedDiameter,
-                relativeVelocity = it.relativeVelocity,
-                distanceFromEarth = it.distanceFromEarth,
-                isPotentiallyHazardous = it.isPotentiallyHazardous
-        )
-    }
+        return map {
+                Asteroid(
+                        id = it.asteroidId,
+                        codename = it.codename,
+                        closeApproachDate = it.closeApproachDate,
+                        absoluteMagnitude = it.absoluteMagnitude,
+                        estimatedDiameter = it.estimatedDiameter,
+                        relativeVelocity = it.relativeVelocity,
+                        distanceFromEarth = it.distanceFromEarth,
+                        isPotentiallyHazardous = it.isPotentiallyHazardous
+                )
+        }
 }

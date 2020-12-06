@@ -22,9 +22,6 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel(private val repository: AsteroidRepository) : ViewModel() {
-//    private val _startDate = LocalDate.now()
-//    private val _endDate = _startDate.plusDays(7)
-
     private val _status = MutableLiveData<String>()
     val status: LiveData<String> get() = _status
 
