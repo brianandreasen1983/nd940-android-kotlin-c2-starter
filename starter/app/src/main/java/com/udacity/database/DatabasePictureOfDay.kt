@@ -11,3 +11,5 @@ data class DatabasePictureOfDay constructor(
         var url: String,
         var mediaType: String
 )
+
+// Extension method to handle the converstion between Domain and Entity?

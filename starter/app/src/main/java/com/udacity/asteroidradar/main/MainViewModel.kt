@@ -22,8 +22,8 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel(private val repository: AsteroidRepository) : ViewModel() {
-    private val _startDate = LocalDate.now()
-    private val _endDate = _startDate.plusDays(7)
+//    private val _startDate = LocalDate.now()
+//    private val _endDate = _startDate.plusDays(7)
 
     private val _status = MutableLiveData<String>()
     val status: LiveData<String> get() = _status
@@ -31,8 +31,8 @@ class MainViewModel(private val repository: AsteroidRepository) : ViewModel() {
     private val _imageOfDay = MutableLiveData<PictureOfDay>()
     val imageOfDay: LiveData<PictureOfDay> get() = _imageOfDay
 
-    private val _asteroids = MutableLiveData<ArrayList<Asteroid>>()
-    val asteroids: LiveData<ArrayList<Asteroid>> get() = _asteroids
+    private val _asteroids = MutableLiveData<List<Asteroid>>()
+    val asteroids: LiveData<List<Asteroid>> get() = _asteroids
 
     init{
         getNasaImageOfTheDay()
@@ -44,19 +44,20 @@ class MainViewModel(private val repository: AsteroidRepository) : ViewModel() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getNasaImageOfTheDay() {
         viewModelScope.launch {
-            _imageOfDay.value = NasaApi.retrofitService.getImageOfTheDay(_startDate)
-            repository.insertAsteroidImageOfTheDay(_imageOfDay.value!!)
+            try{
+                _imageOfDay.value = repository.getAsteroidImageOfTheDay()
+            } catch (e: Exception) {
+                _status.value = "Failure: ${e.message}"
+            }
         }
     }
 
 
-    // The UI for the recycler view should be looking at the room database to pull the value not diretly at the network call.
+    // The UI for the recycler view should be looking at the room database to pull the value not directly at the network call.
     private fun getAsteroids() {
         viewModelScope.launch {
             try {
-                val jsonResult = NasaApi.retrofitService.getAsteroids(_startDate, _endDate)
-                _asteroids.value = parseAsteroidsJsonResult(JSONObject((jsonResult)))
-                repository.insertAllAsteroids(_asteroids.value!!)
+                _asteroids.value = repository.getAsteroids()
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
             }
