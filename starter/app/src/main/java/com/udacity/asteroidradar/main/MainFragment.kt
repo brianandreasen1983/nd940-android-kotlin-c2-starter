@@ -21,31 +21,22 @@ class MainFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
-        // Setup Database as a datasource and then assign the viewModelFactory
         val dataSource = AsteroidDatabase.getInstance(application).asteroidDao
-//        val viewModelFactory = AsteroidViewModelFactory(dataSource, application)
 
-        // Is this the right way to do this or is there a better way? DI?
         val viewModelFactory = AsteroidViewModelFactory(AsteroidApplication().repository)
 
-        // Assign the view model factory.
         val asteroidViewModel =
             ViewModelProvider(
                 this, viewModelFactory).get(MainViewModel::class.java)
 
-        // old code
-//        binding.mainViewModel = viewModel
         binding.mainViewModel = asteroidViewModel
 
         val adapter = AsteroidAdapter()
-        // Setup the binding for the asteroid list and the adapter.
         binding.asteroidRecycler.adapter = adapter
 
-        // Setup the observer to observe the asteroids.
-        // This observes changes in the list.
         asteroidViewModel.asteroids.observe(viewLifecycleOwner, Observer {
             it?.let {
-                // call adapter.submitList which will require a refactor.
+                // TODO: call adapter.submitList which will require a refactor.
             }
         })
 

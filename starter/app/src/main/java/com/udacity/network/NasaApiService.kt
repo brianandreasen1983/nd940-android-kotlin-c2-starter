@@ -30,12 +30,12 @@ interface NasaApiService {
 
     @GET("planetary/apod?&api_key=${API_KEY}")
     fun getImageOfTheDayAsync(
-        @Query("date") date: LocalDate
     ): Deferred<NetworkPictureOfDayContainer>
 
 
     @GET("neo/rest/v1/feed?&api_key=${API_KEY}")
-    suspend fun getAsteroids(): String
+//    suspend fun getAsteroids(): String
+    suspend fun getAsteroidsAsync(): Deferred<NetworkAsteroidsContainer>
 }
 
 /**

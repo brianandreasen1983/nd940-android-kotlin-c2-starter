@@ -1,15 +1,11 @@
 package com.udacity.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.PictureOfDay
 
 @Dao
 interface AsteroidDao {
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * from asteroids")
-    suspend fun getAsteroids(): List<DatabaseAsteroid>
+    fun getAsteroids(): List<DatabaseAsteroid>
 
     @Query("SELECT * FROM asteroids WHERE asteroidId = :key")
     fun getAsteroidsById(key:Long): DatabaseAsteroid

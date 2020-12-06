@@ -18,7 +18,7 @@ class AsteroidDataWorker(appContext: Context, params: WorkerParameters) : Corout
         val repository = AsteroidRepository(database)
 
         return try {
-//            repository.refreshAsteroids()
+            repository.refreshAsteroids()
             repository.refreshPictureOfTheDay()
             Result.success()
         } catch (httpException: HttpException) {

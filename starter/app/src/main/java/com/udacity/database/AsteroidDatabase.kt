@@ -13,8 +13,6 @@ abstract class AsteroidDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AsteroidDatabase? = null
 
-        // Retrieves an instance of the asteroids database.
-        // We only want a single instance of it ever
         fun getInstance(context: Context): AsteroidDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -23,7 +21,6 @@ abstract class AsteroidDatabase : RoomDatabase() {
                     "asteroid_database"
                 ).build()
                 INSTANCE = instance
-                // return instance
                 instance
             }
         }
