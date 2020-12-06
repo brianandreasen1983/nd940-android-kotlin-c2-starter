@@ -23,7 +23,7 @@ import java.time.LocalDate
 private const val BASE_URL = "https://api.nasa.gov/"
 
 // API KEY CONST
-private const val API_KEY = "wuXVUjrEQjwzzN9aMpHAr8zHDgIPJ6RYR89Tsckx"
+private const val API_KEY = ""
 
 private val moshi = Moshi.Builder()
                     .add(KotlinJsonAdapterFactory())

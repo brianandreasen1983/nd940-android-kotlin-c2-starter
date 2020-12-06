@@ -1,7 +1,10 @@
 package com.udacity.database
 
+import androidx.lifecycle.Transformations.map
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 
 @Entity(tableName = "picture_of_day")
 data class DatabasePictureOfDay constructor(
@@ -12,4 +15,5 @@ data class DatabasePictureOfDay constructor(
         var mediaType: String
 )
 
-// Extension method to handle the converstion between Domain and Entity?
+
+// TODO: Write an extension method to convert the database model to a domain model.

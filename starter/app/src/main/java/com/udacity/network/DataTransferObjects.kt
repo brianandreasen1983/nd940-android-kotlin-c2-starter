@@ -1,6 +1,7 @@
 package com.udacity.network
 
-import com.udacity.database.DatabaseAsteroid
+import com.squareup.moshi.JsonClass
+import com.udacity.asteroidradar.PictureOfDay
 
 /**
  * DataTransferObjects go in this file. These are responsible for parsing responses from the server
@@ -8,15 +9,19 @@ import com.udacity.database.DatabaseAsteroid
  * using them.
  */
 
-// TODO (03) Define extension function NetworkVideoHolder.asDatabaseModel(),
-// I understand what is going on at a high level but not at the pattern level.
-//fun NetworkVideoContainer.asDatabaseModel(): Array<DatabaseVideo> {
-//    return videos.map {
-//        DatabaseVideo (
-//                title = it.title,
-//                description = it.description,
-//                url = it.url,
-//                updated = it.updated,
-//                thumbnail = it.thumbnail)
-//    }.toTypedArray()
-//}
+@JsonClass(generateAdapter = true)
+data class NetworkPictureOfDayContainer(val pictureOfDay: PictureOfDay)
+
+@JsonClass(generateAdapter = true)
+data class NetworkPictureOfDay (
+    var title: String,
+    var url: String,
+    var mediaType: String
+)
+
+//Convert network results to database objects
+fun NetworkPictureOfDayContainer.asDomainModel(): PictureOfDay{
+    return PictureOfDay(pictureOfDay.mediaType, pictureOfDay.title, pictureOfDay.url)
+}
+
+// Need to do the same style of changes to the asteroids for mapping reasons.
