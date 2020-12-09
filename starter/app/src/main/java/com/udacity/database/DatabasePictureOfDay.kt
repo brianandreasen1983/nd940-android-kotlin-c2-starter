@@ -14,6 +14,6 @@ data class DatabasePictureOfDay constructor(
         var url: String,
         @ColumnInfo(name = "title")
         var title: String,
-        @ColumnInfo(name = "image_media_type")
+        @ColumnInfo(name = "media_type")
         var mediaType: String
 )

@@ -13,7 +13,7 @@ import com.udacity.asteroidradar.databinding.ListItemAsteroidBinding
 import com.udacity.database.DatabaseAsteroid
 
 
-class AsteroidAdapter : ListAdapter<DatabaseAsteroid, AsteroidAdapter.ViewHolder>(AsteroidDiffCallback()) {
+class AsteroidAdapter : ListAdapter<Asteroid, AsteroidAdapter.ViewHolder>(AsteroidDiffCallback()) {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val asteroid = getItem(position)
         holder.bind(asteroid)
@@ -25,12 +25,12 @@ class AsteroidAdapter : ListAdapter<DatabaseAsteroid, AsteroidAdapter.ViewHolder
     }
 
     // DiffUtil handles if an item has changed a lot more efficiency than the data object above.
-    class AsteroidDiffCallback : DiffUtil.ItemCallback<DatabaseAsteroid>() {
-        override fun areItemsTheSame(oldItem: DatabaseAsteroid, newItem: DatabaseAsteroid): Boolean {
-            return oldItem.asteroidId == newItem.asteroidId
+    class AsteroidDiffCallback : DiffUtil.ItemCallback<Asteroid>() {
+        override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: DatabaseAsteroid, newItem: DatabaseAsteroid): Boolean {
+        override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem == newItem
         }
 
@@ -38,7 +38,7 @@ class AsteroidAdapter : ListAdapter<DatabaseAsteroid, AsteroidAdapter.ViewHolder
 
     class ViewHolder private constructor(val binding: ListItemAsteroidBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(asteroid: DatabaseAsteroid) {
+        fun bind(asteroid: Asteroid) {
             // Bind the asteroid.....
             // We do not want to bind to the view model we want to bind to the database entity? wtf?
 //            binding.executePendingBindings()

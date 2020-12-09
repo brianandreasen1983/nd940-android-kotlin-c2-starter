@@ -30,7 +30,6 @@ class MainFragment : Fragment() {
                 this, viewModelFactory).get(MainViewModel::class.java)
 
         binding.mainViewModel = asteroidViewModel
-//          binding.mainViewModel = viewModel
         val adapter = AsteroidAdapter()
         binding.asteroidRecycler.adapter = adapter
 

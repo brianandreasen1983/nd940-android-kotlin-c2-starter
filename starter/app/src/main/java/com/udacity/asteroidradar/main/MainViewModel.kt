@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.main
 
+import android.app.job.JobScheduler
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
@@ -10,6 +11,11 @@ import com.udacity.database.AsteroidRepository
 import com.udacity.database.DatabaseAsteroid
 import com.udacity.network.NasaAPIStatus
 import com.udacity.network.NasaApi
+import com.udacity.network.asDatabaseModel
+import com.udacity.network.asDomainModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -21,20 +27,32 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
     private val _imageOfDay = MutableLiveData<PictureOfDay>()
     val imageOfDay: LiveData<PictureOfDay> get() = _imageOfDay
 
-    private val _asteroids = MutableLiveData<List<DatabaseAsteroid>>()
-    val asteroids: LiveData<List<DatabaseAsteroid>> get() = _asteroids
+    private val _asteroids = MutableLiveData<List<Asteroid>>()
+    val asteroids = asteroidRepository.asteroids
+
+//    val asteroids: LiveData<List<DatabaseAsteroid>> get() = _asteroids
+
+    private val viewModelJob = SupervisorJob()
+    private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
+
 
     init{
-        getNasaImageOfTheDay()
-        getAsteroids()
+        viewModelScope.launch {
+            refreshPictureOfDayFromNetwork()
+            refreshAsteroidsFromNetwork()
+        }
     }
+
+
 
 
 //     Original code can delete this was to prove a repository concept and was originally written to get the data from the network.
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getNasaImageOfTheDay() {
+    private fun refreshPictureOfDayFromNetwork() {
         viewModelScope.launch {
             try{
+                asteroidRepository.refreshPictureOfTheDay()
                 _imageOfDay.value = asteroidRepository.getAsteroidImageOfTheDay()
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
@@ -42,10 +60,10 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
         }
     }
 
-    private fun getAsteroids() {
+    private fun refreshAsteroidsFromNetwork() {
         viewModelScope.launch {
             try {
-                _asteroids.value = asteroidRepository.getAsteroids().value
+                asteroidRepository.refreshAsteroids()
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
             }

@@ -16,7 +16,8 @@ interface AsteroidDao {
     suspend fun getPictureOfTheDay(): DatabasePictureOfDay
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg asteroids: DatabaseAsteroid)
+//    @JvmSuppressWildcards
+    suspend fun insertAll(asteroids: List<DatabaseAsteroid>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPictureOfTheDay(vararg pictureOfDay: DatabasePictureOfDay)

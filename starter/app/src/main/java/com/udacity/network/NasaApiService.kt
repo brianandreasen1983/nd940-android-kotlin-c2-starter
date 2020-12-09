@@ -3,6 +3,7 @@ package com.udacity.network
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.udacity.asteroidradar.PictureOfDay
 import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -15,7 +16,7 @@ import java.time.LocalDate
 private const val BASE_URL = "https://api.nasa.gov/"
 
 // API KEY CONST
-private const val API_KEY = ""
+private const val API_KEY = "wuXVUjrEQjwzzN9aMpHAr8zHDgIPJ6RYR89Tsckx"
 
 private val moshi = Moshi.Builder()
                     .add(KotlinJsonAdapterFactory())
@@ -23,19 +24,20 @@ private val moshi = Moshi.Builder()
 
 interface NasaApiService {
     // Original code
-//    @GET("planetary/apod?&api_key=${API_KEY}")
-//    suspend fun getImageOfTheDay(
+    @GET("planetary/apod?&date=2020-12-08&api_key=${API_KEY}")
+    suspend fun getImageOfTheDay(
 //        @Query("date") date: LocalDate
-//    ): PictureOfDay
+    ): PictureOfDay
 
-    @GET("planetary/apod?&api_key=${API_KEY}")
-    fun getImageOfTheDayAsync(
-    ): Deferred<NetworkPictureOfDayContainer>
+//    @GET("planetary/apod?&api_key=${API_KEY}")
+//    fun getImageOfTheDayAsync(
+//    ): Deferred<NetworkPictureOfDayContainer>
 
 
     @GET("neo/rest/v1/feed?&api_key=${API_KEY}")
-//    suspend fun getAsteroids(): String
-    suspend fun getAsteroidsAsync(): Deferred<NetworkAsteroidsContainer>
+    suspend fun getAsteroids(): String
+
+//    suspend fun getAsteroidsAsync(): Deferred<NetworkAsteroidsContainer>
 }
 
 /**
