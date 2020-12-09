@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [DatabaseAsteroid::class, DatabasePictureOfDay::class], version = 1, exportSchema = false)
+@Database(entities = [DatabaseAsteroid::class, DatabasePictureOfDay::class], version = 2, exportSchema = false)
 abstract class AsteroidDatabase : RoomDatabase() {
     abstract val asteroidDao: AsteroidDao
 
@@ -19,7 +19,8 @@ abstract class AsteroidDatabase : RoomDatabase() {
                     context.applicationContext,
                     AsteroidDatabase::class.java,
                     "asteroid_database"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                 .build()
                 INSTANCE = instance
                 instance
             }

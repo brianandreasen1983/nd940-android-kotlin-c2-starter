@@ -30,13 +30,13 @@ class MainFragment : Fragment() {
                 this, viewModelFactory).get(MainViewModel::class.java)
 
         binding.mainViewModel = asteroidViewModel
-
+//          binding.mainViewModel = viewModel
         val adapter = AsteroidAdapter()
         binding.asteroidRecycler.adapter = adapter
 
         asteroidViewModel.asteroids.observe(viewLifecycleOwner, Observer {
             it?.let {
-                // TODO: call adapter.submitList which will require a refactor.
+                adapter.submitList(it)
             }
         })
 
