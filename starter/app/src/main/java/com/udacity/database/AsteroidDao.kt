@@ -9,15 +9,12 @@ import java.util.*
 
 @Dao
 interface AsteroidDao {
-//    // We want to be able to get the asteroids from today if that is selected for a date range
-//    @Query("SELECT * FROM asteroids WHERE close_approach_date = :date")
-//    fun getAsteroidsByDate(date: Long): DatabaseAsteroid
-//
-//    // We also want to be able to get the asteroids from this week if that date range is selected.
-//    @Query("SELECT * FROM asteroids WHERE close_approach_date BETWEEN :startDate AND :endDate")
-//    fun getAsteroidsByWeek(startDate: Long, endDate: Long): LiveData<List<DatabaseAsteroid>>
+    @Query("SELECT * FROM asteroids WHERE close_approach_date = :date")
+    fun getAsteroidsByDate(date: Date): DatabaseAsteroid
 
-    // We should also get all of the saved asteroids if that is selected.
+    @Query("SELECT * FROM asteroids WHERE close_approach_date BETWEEN :startDate AND :endDate")
+    fun getAsteroidsByWeek(startDate: Date, endDate: Date): LiveData<List<DatabaseAsteroid>>
+
     @Query("SELECT * FROM asteroids")
     fun getAsteroids(): LiveData<List<DatabaseAsteroid>>
 
