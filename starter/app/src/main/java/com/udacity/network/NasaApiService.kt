@@ -29,15 +29,9 @@ interface NasaApiService {
 //        @Query("date") date: LocalDate
     ): PictureOfDay
 
-//    @GET("planetary/apod?&api_key=${API_KEY}")
-//    fun getImageOfTheDayAsync(
-//    ): Deferred<NetworkPictureOfDayContainer>
-
 
     @GET("neo/rest/v1/feed?&api_key=${API_KEY}")
     suspend fun getAsteroids(): String
-
-//    suspend fun getAsteroidsAsync(): Deferred<NetworkAsteroidsContainer>
 }
 
 /**

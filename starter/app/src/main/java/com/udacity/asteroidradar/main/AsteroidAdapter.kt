@@ -2,21 +2,17 @@ package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.ListItemAsteroidBinding
-import com.udacity.database.DatabaseAsteroid
 
 
-class AsteroidAdapter : ListAdapter<Asteroid, AsteroidAdapter.ViewHolder>(AsteroidDiffCallback()) {
+class AsteroidAdapter(val clickListener: AsteroidListener) : ListAdapter<Asteroid, AsteroidAdapter.ViewHolder>(AsteroidDiffCallback()) {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val asteroid = getItem(position)
-        holder.bind(asteroid)
+        holder.bind(asteroid!!, clickListener)
     }
 
     // Used to inflate the recycler view layout
@@ -38,11 +34,12 @@ class AsteroidAdapter : ListAdapter<Asteroid, AsteroidAdapter.ViewHolder>(Astero
 
     class ViewHolder private constructor(val binding: ListItemAsteroidBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(asteroid: Asteroid) {
-            // Bind the asteroid.....
-            // We do not want to bind to the view model we want to bind to the database entity? wtf?
-//            binding.executePendingBindings()
+        fun bind(
+            asteroid: Asteroid,
+            clickListener: AsteroidListener
+        ) {
             binding.asteroid = asteroid
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -53,5 +50,10 @@ class AsteroidAdapter : ListAdapter<Asteroid, AsteroidAdapter.ViewHolder>(Astero
                 return ViewHolder(binding)
             }
         }
+    }
+
+    // Responsible for implementing a click listener.
+    class AsteroidListener(val clickListener: (asteroid: Asteroid) -> Unit){
+        fun onClick(asteroid: Asteroid) = clickListener(asteroid)
     }
 }

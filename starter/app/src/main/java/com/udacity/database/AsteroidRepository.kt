@@ -9,6 +9,7 @@ import com.google.gson.JsonObject
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.main.MainViewModel
 import com.udacity.network.NasaApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
