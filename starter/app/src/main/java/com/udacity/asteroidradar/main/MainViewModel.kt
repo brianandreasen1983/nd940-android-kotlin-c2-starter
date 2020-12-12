@@ -38,7 +38,7 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
     val navigateToAsteroidDetails get() = _navigateToAsteroidDetails
 
     enum class NasaApiFilter(val value: String) {
-        FILTER_ASTEROIDS_TODAY("1 day"),
+        FILTER_ASTEROIDS_TODAY("1" ),
         FILTER_ASTEROIDS_BY_WEEK("7 days"),
         FILTER_BY_SAVED_ASTEROIDS("saved")
     }
@@ -69,11 +69,10 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
     private fun refreshAsteroidsFromNetwork(filter: NasaApiFilter) {
         viewModelScope.launch {
             try {
+                print(filter)
                 _status.value = NasaAPIStatus.LOADING.toString()
                 asteroidRepository.refreshAsteroids()
                 _asteroids.value = asteroidRepository.getAsteroids().value as List<Asteroid>?
-                print(filter.value)
-                print(_asteroids.value)
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
             } finally {
@@ -91,6 +90,6 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
     }
 
     fun updateFilter(filter: NasaApiFilter) {
-        // getAsteroids(filter)
+//         getAsteroids(filter)
     }
 }

@@ -34,7 +34,6 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
             val jsonResult = NasaApi.retrofitService.getAsteroids()
-            // Parse the json result and then store them all in the database.
             val asteroids = parseAsteroidsJsonResult(JSONObject(jsonResult))
             val listDbAsteroids = mutableListOf<DatabaseAsteroid>()
             print(asteroids)
