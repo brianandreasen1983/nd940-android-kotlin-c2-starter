@@ -21,6 +21,8 @@ import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewModel() {
+    private val asteroidFilter = MutableLiveData(AsteroidFilter.WEEKLY)
+
     private val _status = MutableLiveData<String>()
     val status: LiveData<String> get() = _status
 
@@ -37,24 +39,22 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
     private val _navigateToAsteroidDetails = MutableLiveData<Asteroid>()
     val navigateToAsteroidDetails get() = _navigateToAsteroidDetails
 
-    enum class NasaApiFilter(val value: String) {
-        FILTER_ASTEROIDS_TODAY("1" ),
-        FILTER_ASTEROIDS_BY_WEEK("7 days"),
-        FILTER_BY_SAVED_ASTEROIDS("saved")
+    enum class AsteroidFilter {
+        WEEKLY,
+        TODAY
     }
 
-    init{
+    init {
         viewModelScope.launch {
             refreshPictureOfDayFromNetwork()
-            refreshAsteroidsFromNetwork(NasaApiFilter.FILTER_BY_SAVED_ASTEROIDS)
+            refreshAsteroidsFromNetwork(AsteroidFilter.WEEKLY)
         }
     }
 
-//     Original code can delete this was to prove a repository concept and was originally written to get the data from the network.
     @RequiresApi(Build.VERSION_CODES.O)
     private fun refreshPictureOfDayFromNetwork() {
-    viewModelScope.launch {
-            try{
+        viewModelScope.launch {
+            try {
                 _status.value = NasaAPIStatus.LOADING.toString()
                 asteroidRepository.refreshPictureOfTheDay()
                 _imageOfDay.value = asteroidRepository.getAsteroidImageOfTheDay()
@@ -66,10 +66,9 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
         }
     }
 
-    private fun refreshAsteroidsFromNetwork(filter: NasaApiFilter) {
+    private fun refreshAsteroidsFromNetwork(filter: AsteroidFilter) {
         viewModelScope.launch {
             try {
-                print(filter)
                 _status.value = NasaAPIStatus.LOADING.toString()
                 asteroidRepository.refreshAsteroids()
                 _asteroids.value = asteroidRepository.getAsteroids().value as List<Asteroid>?
@@ -89,7 +88,7 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
         _navigateToAsteroidDetails.value = null
     }
 
-    fun updateFilter(filter: NasaApiFilter) {
-//         getAsteroids(filter)
+    fun setAsteroidFilter(filter: AsteroidFilter) {
+        asteroidFilter.postValue(filter)
     }
 }

@@ -10,10 +10,10 @@ import java.util.*
 @Dao
 interface AsteroidDao {
     @Query("SELECT * FROM asteroids WHERE close_approach_date = :date")
-    fun getAsteroidsByDate(date: Date): DatabaseAsteroid
+    fun getAsteroidsByDate(date: LocalDate): LiveData<DatabaseAsteroid>
 
     @Query("SELECT * FROM asteroids WHERE close_approach_date BETWEEN :startDate AND :endDate")
-    fun getAsteroidsByWeek(startDate: Date, endDate: Date): LiveData<List<DatabaseAsteroid>>
+    fun getAsteroidsByWeek(startDate: LocalDate, endDate: LocalDate): LiveData<List<DatabaseAsteroid>>
 
     @Query("SELECT * FROM asteroids")
     fun getAsteroids(): LiveData<List<DatabaseAsteroid>>

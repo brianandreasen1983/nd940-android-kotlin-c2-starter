@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.room.Database
 import com.google.gson.JsonObject
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
@@ -15,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.time.LocalDate
+import java.util.*
 
 // Repository for the asteroids
 
@@ -72,8 +74,26 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
         return PictureOfDay(databasePictureOfDay.mediaType, databasePictureOfDay.title, databasePictureOfDay.url)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @WorkerThread
     suspend fun getAsteroids(): LiveData<List<DatabaseAsteroid>> {
         return asteroidDatabase.asteroidDao.getAsteroids()
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @WorkerThread
+    fun getWeeklyAsteroids() : LiveData<List<DatabaseAsteroid>> {
+        val startDate = LocalDate.now()
+        val endDate = startDate.plusDays(7)
+        return asteroidDatabase.asteroidDao.getAsteroidsByWeek(startDate, endDate)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @WorkerThread
+    fun getTodayAsteroids(): LiveData<DatabaseAsteroid> {
+        val startDate = LocalDate.now()
+        return asteroidDatabase.asteroidDao.getAsteroidsByDate(startDate)
+    }
+
+
 }

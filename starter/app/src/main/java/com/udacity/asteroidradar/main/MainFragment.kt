@@ -38,7 +38,6 @@ class MainFragment : Fragment() {
         binding.mainViewModel = asteroidViewModel
 
         val adapter = AsteroidAdapter(AsteroidAdapter.AsteroidListener {
-//            asteroidId ->  Toast.makeText(context, "$asteroidId", Toast.LENGTH_SHORT).show()
             asteroid ->  asteroidViewModel.onAsteroidClicked(asteroid)
         })
 
@@ -68,16 +67,11 @@ class MainFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    // The goal here is to issue dynamic database queries based on this.
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            // Show all asteroids in past 7 days.
-            R.id.show_all_menu -> MainViewModel.NasaApiFilter.FILTER_ASTEROIDS_BY_WEEK
-            // Show asteroids for today.
-            R.id.show_rent_menu -> MainViewModel.NasaApiFilter.FILTER_ASTEROIDS_TODAY
-            // Show all saved asteroids.
-            R.id.show_buy_menu -> MainViewModel.NasaApiFilter.FILTER_BY_SAVED_ASTEROIDS
-            else -> MainViewModel.NasaApiFilter.FILTER_BY_SAVED_ASTEROIDS
+            R.id.show_all_menu -> viewModel.setAsteroidFilter(MainViewModel.AsteroidFilter.WEEKLY)
+            R.id.show_rent_menu -> viewModel.setAsteroidFilter(MainViewModel.AsteroidFilter.TODAY)
         }
         return true
     }
