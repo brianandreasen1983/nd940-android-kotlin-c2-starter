@@ -18,9 +18,6 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.util.*
 
-// Repository for the asteroids
-
-// There are mapping problems to solve in the database here in which we will need to solve using our helper functions
 class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,16 +31,14 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val todayAsteroids: LiveData<List<Asteroid>> = Transformations.map(asteroidDatabase.asteroidDao.getTodayAsteroids(_startDate)) {
+    val todayAsteroids: LiveData<List<Asteroid>> = Transformations.map(asteroidDatabase.asteroidDao.getTodayAsteroids(_startDate.toString())) {
         it.asDomainModel()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val weeklyAsteroids: LiveData<List<Asteroid>> = Transformations.map(asteroidDatabase.asteroidDao.getWeeklyAsteroids(_startDate, _endDate)) {
+    val weeklyAsteroids: LiveData<List<Asteroid>> = Transformations.map(asteroidDatabase.asteroidDao.getWeeklyAsteroids(_startDate.toString(), _endDate.toString())) {
         it.asDomainModel()
     }
-
-
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
