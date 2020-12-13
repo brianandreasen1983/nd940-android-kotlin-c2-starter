@@ -24,7 +24,7 @@ private val moshi = Moshi.Builder()
 
 interface NasaApiService {
     // Original code
-    @GET("planetary/apod?&date=2020-12-08&api_key=${API_KEY}")
+    @GET("planetary/apod?&date=2020-12-12&api_key=${API_KEY}")
     suspend fun getImageOfTheDay(
 //        @Query("date") date: LocalDate
     ): PictureOfDay

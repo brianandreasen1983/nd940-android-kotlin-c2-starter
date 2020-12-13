@@ -85,14 +85,16 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
     fun getWeeklyAsteroids() : LiveData<List<DatabaseAsteroid>> {
         val startDate = LocalDate.now()
         val endDate = startDate.plusDays(7)
-        return asteroidDatabase.asteroidDao.getAsteroidsByWeek(startDate, endDate)
+        val returnedAsteroids = asteroidDatabase.asteroidDao.getAsteroidsByWeek(startDate, endDate)
+        return returnedAsteroids
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @WorkerThread
-    fun getTodayAsteroids(): LiveData<DatabaseAsteroid> {
+    fun getTodayAsteroids(): LiveData<List<DatabaseAsteroid>> {
         val startDate = LocalDate.now()
-        return asteroidDatabase.asteroidDao.getAsteroidsByDate(startDate)
+        val returnedAsteroidToday = asteroidDatabase.asteroidDao.getAsteroidsByDate(startDate)
+        return returnedAsteroidToday
     }
 
 

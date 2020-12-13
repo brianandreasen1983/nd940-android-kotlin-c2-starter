@@ -70,8 +70,9 @@ class MainFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.show_all_menu -> viewModel.setAsteroidFilter(MainViewModel.AsteroidFilter.WEEKLY)
-            R.id.show_rent_menu -> viewModel.setAsteroidFilter(MainViewModel.AsteroidFilter.TODAY)
+            R.id.show_all_menu -> viewModel.getWeeklyAsteroids()
+            R.id.show_rent_menu -> viewModel.getTodayAsteroids()
+            else -> viewModel.getAsteroids()
         }
         return true
     }
