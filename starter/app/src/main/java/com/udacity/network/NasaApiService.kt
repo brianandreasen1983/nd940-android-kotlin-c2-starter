@@ -12,10 +12,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.time.LocalDate
 
-// CONST FOR BASE URL
 private const val BASE_URL = "https://api.nasa.gov/"
 
-// API KEY CONST
 private const val API_KEY = ""
 
 private val moshi = Moshi.Builder()
@@ -23,7 +21,6 @@ private val moshi = Moshi.Builder()
                     .build()
 
 interface NasaApiService {
-    // Original code
     @GET("planetary/apod?&api_key=${API_KEY}")
     suspend fun getImageOfTheDay(
         @Query("date") date: LocalDate

@@ -15,12 +15,10 @@ class AsteroidAdapter(val clickListener: AsteroidListener) : ListAdapter<Asteroi
         holder.bind(asteroid!!, clickListener)
     }
 
-    // Used to inflate the recycler view layout
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
-    // DiffUtil handles if an item has changed a lot more efficiency than the data object above.
     class AsteroidDiffCallback : DiffUtil.ItemCallback<Asteroid>() {
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem.id == newItem.id

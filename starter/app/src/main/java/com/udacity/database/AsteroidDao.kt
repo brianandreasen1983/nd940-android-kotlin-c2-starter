@@ -9,7 +9,7 @@ import java.util.*
 
 @Dao
 interface AsteroidDao {
-    @Query("SELECT * FROM asteroids WHERE close_approach_date = :date")
+    @Query("SELECT * FROM asteroids WHERE close_approach_date = :date ORDER BY close_approach_date DESC")
     fun getTodayAsteroids(date: String): LiveData<List<DatabaseAsteroid>>
 
     @Query("SELECT * FROM asteroids WHERE close_approach_date BETWEEN :startDate AND :endDate")
