@@ -9,7 +9,7 @@ import com.udacity.asteroidradar.Asteroid
 @Entity(tableName = "asteroids")
 data class DatabaseAsteroid constructor(
         @PrimaryKey(autoGenerate = true)
-        var asteroidId: Long = 0L,
+        var id: Long = 0L,
         @ColumnInfo(name="codename")
         var codename: String,
         @ColumnInfo(name = "close_approach_date")
@@ -31,7 +31,7 @@ data class DatabaseAsteroid constructor(
 fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
         return map {
             Asteroid(
-                    id = it.asteroidId,
+                    id = it.id,
                     codename = it.codename,
                     closeApproachDate = it.closeApproachDate,
                     absoluteMagnitude = it.absoluteMagnitude,

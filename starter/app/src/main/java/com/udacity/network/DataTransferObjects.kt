@@ -56,7 +56,7 @@ fun NetworkAsteroidsContainer.asDomainModel(): List<Asteroid> {
 fun NetworkAsteroidsContainer.asDatabaseModel() : Array<DatabaseAsteroid> {
     return asteroids.map {
         DatabaseAsteroid(
-            asteroidId = it.id,
+            id = it.id,
             codename = it.codename,
             closeApproachDate = it.closeApproachDate,
             absoluteMagnitude = it.absoluteMagnitude,

@@ -33,6 +33,18 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
          it.asDomainModel()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    val todayAsteroids: LiveData<List<Asteroid>> = Transformations.map(asteroidDatabase.asteroidDao.getTodayAsteroids(_startDate)) {
+        it.asDomainModel()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    val weeklyAsteroids: LiveData<List<Asteroid>> = Transformations.map(asteroidDatabase.asteroidDao.getWeeklyAsteroids(_startDate, _endDate)) {
+        it.asDomainModel()
+    }
+
+
+
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
             val jsonResult = NasaApi.retrofitService.getAsteroids()
@@ -61,8 +73,7 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun refreshPictureOfTheDay() {
         withContext(Dispatchers.IO) {
-            print(LocalDate.now())
-            val pictureOfDay = NasaApi.retrofitService.getImageOfTheDay()
+            val pictureOfDay = NasaApi.retrofitService.getImageOfTheDay(LocalDate.now())
             val dbPictureOfDay = DatabasePictureOfDay(pictureOfDay.url, pictureOfDay.title, pictureOfDay.mediaType)
             asteroidDatabase.asteroidDao.insertPictureOfTheDay(dbPictureOfDay)
         }
@@ -73,29 +84,4 @@ class AsteroidRepository(private val asteroidDatabase: AsteroidDatabase) {
         val databasePictureOfDay = asteroidDatabase.asteroidDao.getPictureOfTheDay()
         return PictureOfDay(databasePictureOfDay.mediaType, databasePictureOfDay.title, databasePictureOfDay.url)
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    @WorkerThread
-    suspend fun getAsteroids(): LiveData<List<DatabaseAsteroid>> {
-        return asteroidDatabase.asteroidDao.getAsteroids()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    @WorkerThread
-    fun getWeeklyAsteroids() : LiveData<List<DatabaseAsteroid>> {
-        val startDate = LocalDate.now()
-        val endDate = startDate.plusDays(7)
-        val returnedAsteroids = asteroidDatabase.asteroidDao.getAsteroidsByWeek(startDate, endDate)
-        return returnedAsteroids
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    @WorkerThread
-    fun getTodayAsteroids(): LiveData<List<DatabaseAsteroid>> {
-        val startDate = LocalDate.now()
-        val returnedAsteroidToday = asteroidDatabase.asteroidDao.getAsteroidsByDate(startDate)
-        return returnedAsteroidToday
-    }
-
-
 }

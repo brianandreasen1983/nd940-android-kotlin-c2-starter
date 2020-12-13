@@ -21,6 +21,7 @@ import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewModel() {
+    private val asteroidFilter = MutableLiveData(AsteroidFilter.WEEKLY)
 
     private val _status = MutableLiveData<String>()
     val status: LiveData<String> get() = _status
@@ -29,7 +30,14 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
     val imageOfDay: LiveData<PictureOfDay> get() = _imageOfDay
 
     private val _asteroids = MutableLiveData<List<Asteroid>>()
-    val asteroids = asteroidRepository.asteroids
+
+    val asteroids = Transformations.switchMap(asteroidFilter) {
+        when (it!!) {
+            AsteroidFilter.WEEKLY -> asteroidRepository.weeklyAsteroids
+            AsteroidFilter.TODAY -> asteroidRepository.todayAsteroids
+            else -> asteroidRepository.asteroids
+        }
+    }
 
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -47,7 +55,7 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
     init {
         viewModelScope.launch {
             refreshPictureOfDayFromNetwork()
-            refreshAsteroidsFromNetwork(AsteroidFilter.WEEKLY)
+            refreshAsteroidsFromNetwork(AsteroidFilter.ALL)
         }
     }
 
@@ -71,7 +79,6 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
             try {
                 _status.value = NasaAPIStatus.LOADING.toString()
                 asteroidRepository.refreshAsteroids()
-                _asteroids.value = asteroidRepository.getAsteroids().value as List<Asteroid>?
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
             } finally {
@@ -80,34 +87,15 @@ class MainViewModel(private val asteroidRepository: AsteroidRepository) : ViewMo
         }
     }
 
-    fun getAsteroids() {
-        viewModelScope.launch {
-            _asteroids.value = asteroidRepository.getAsteroids().value as List<Asteroid>?
-            print(_asteroids.value)
-        }
-    }
-
-    fun getWeeklyAsteroids() {
-        viewModelScope.launch {
-            _asteroids.value = asteroidRepository.getWeeklyAsteroids().value as List<Asteroid>?
-            print(_asteroids.value)
-        }
-    }
-
-    fun getTodayAsteroids() {
-        viewModelScope.launch {
-            _asteroids.value = asteroidRepository.getTodayAsteroids().value as List<Asteroid>?
-            print(_asteroids.value)
-        }
-    }
-
-
-
     fun onAsteroidClicked(asteroid: Asteroid) {
         _navigateToAsteroidDetails.value = asteroid
     }
 
     fun onAsteroidClickedNavigated() {
         _navigateToAsteroidDetails.value = null
+    }
+
+    fun setAsteroidFilter(filter: AsteroidFilter) {
+        asteroidFilter.postValue(filter)
     }
 }
